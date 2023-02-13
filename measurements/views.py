@@ -10,8 +10,8 @@ def measurements_view(request):
         id = request.GET.get("id", None)
         if id:
             measurement_dto = ms.get_measurement(id)
-            measurement  = serializers.serialize('json', [measurement_dto])
-            return HttpResponse( measurement, 'application/json')
+            measurement  = serializers.serialize('json', [measurement_dto,])
+            return HttpResponse( measurement, 'application/json' )
         else:
             measurements_dto = ms.get_measurements()
             measurements = serializers.serialize('json', measurements_dto)
@@ -22,15 +22,30 @@ def measurements_view(request):
             measurement = serializers.serialize('json', [measurement_dto,])
             return HttpResponse(measurement, 'application/json')
 
+  
+
 @csrf_exempt
 def measurement_view(request, pk):
     if request.method== 'GET':
         measurement_dto = ms.get_measurement(pk)
-        measurement = serializers.serialized('json', [measurement_dto,])
+        measurement = serializers.serialize('json', [measurement_dto,])
         return HttpResponse(measurement, 'application/json')
 
     if request.method =='PUT': 
         measurement_dto = ms.update_measurement(pk, json.loads(request.body))
         measurement = serializers.serialize('json', [measurement_dto,])
         return HttpResponse(measurement, 'application/json')
+        
+@csrf_exempt
+def measurement_view(request, pk):
+    if request.method== 'GET':
+        measurement_dto = ms.get_measurement(pk)
+        measurement = serializers.serialize('json', [measurement_dto,])
+        return HttpResponse(measurement, 'application/json')
+
+    if request.method == 'DELETE':
+        measurement_dto = ms.delete_measurement(pk)
+        measurement = serializers.serialize('json', [measurement_dto,])
+        return HttpResponse(measurement, 'application/json')
+
 # Create your views here.
